@@ -84,7 +84,6 @@ public class Sprite implements Runnable{
             int ovalRadius = panel.ovalWidth / 2;
             int spriteRadius = SIZE / 2;
 
-            while (true) {
                 nLastXPos = x-7;
                 nLastYPos = y-7;
                 move();
@@ -94,45 +93,53 @@ public class Sprite implements Runnable{
                         ((panel.ovalCenter - nLastYPos) * (panel.ovalCenter - nLastYPos));
                 double doesEqual = (ovalRadius + spriteRadius) * (ovalRadius + spriteRadius);
 
-                if (distance <= doesEqual && inSphere == false ){
-                    System.out.println("they are in the circle");
-                    inSphere = true;
-                    if ( panel.numOfSpritesinCircle <= 2 ) {
-                        try {
-                            System.out.println(panel.numOfSpritesinCircle);
-                            panel.consume();
 
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }else{
-                        try {
-
-                            System.out.println("There are more  than 2 balls in the circle");
-                            panel.produce();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-            }
-            // determine if ball is exiting square by checking left, bottom,
-                // top, and middle boundaries of square
-                if (distance > doesEqual && inSphere == true || panel.numOfSpritesinCircle == 2 ) {
-                    inSphere = false;
+            if (distance <= doesEqual && inSphere == false ){
+                System.out.println("they are in the circle");
+                inSphere = true;
+                if ( panel.numOfSpritesinCircle <= 2 ) {
                     try {
+                        System.out.println(panel.numOfSpritesinCircle);
+                        panel.consume();
+
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }else if (panel.numOfSpritesinCircle > 4){
+                    try {
+
+                        System.out.println("There are more  than 2 balls in the circle");
                         panel.produce();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    //sleep while waiting to display the next frame of the animation
-
                 }
-                try {
-                    Thread.sleep(40);  // wake up roughly 25 frames per second
-                } catch (InterruptedException exception) {
-                    exception.printStackTrace();
-                }
+              }
+            try {
+                Thread.sleep(40);  // wake up roughly 25 frames per second
+            } catch (InterruptedException exception) {
+                exception.printStackTrace();
             }
         }
+
     }
 }
+//                if (distance <= doesEqual && inSphere == false ){
+//                    System.out.println("they are in the circle");
+//                    inSphere = true;
+//                    if ( panel.numOfSpritesinCircle <= 2 ) {
+//                        try {
+//                            panel.consume();
+//
+//                        } catch (InterruptedException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }else{
+//                        try {
+//
+//                            System.out.println("There are more  than 2 balls in the circle");
+//                            panel.produce();
+//                        } catch (InterruptedException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }

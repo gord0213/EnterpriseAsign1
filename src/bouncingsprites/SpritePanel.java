@@ -47,8 +47,8 @@ public class SpritePanel extends JPanel{
 	}
 	public synchronized void produce() throws InterruptedException {
 		--numOfSpritesinCircle;
-		while (numOfSpritesinCircle > 2){
-			System.out.println("There are more  than 2 balls in the circle");
+		while (numOfSpritesinCircle > 4){
+			System.out.println("There are more  than  balls in the circle");
 			wait();
 		}
 		notifyAll();
