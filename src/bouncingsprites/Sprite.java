@@ -16,8 +16,8 @@ public class Sprite implements Runnable{
 	public final static Random random = new Random();
 	
 	final static int SIZE = 20;
-	final static int MAX_SPEED = 10;
-	
+	final static int MAX_SPEED = 5;
+	private final static Object LOCK = new Object();
 	SpritePanel panel;
 
 	private int x;
@@ -26,15 +26,14 @@ public class Sprite implements Runnable{
 	private int dx;
 	private int dy;
 	private Color color = Color.BLUE;
-    private Thread animation;
 
     public Sprite (SpritePanel panel)
     {
     	this.panel = panel;
         x = random.nextInt(panel.getWidth());
         y = random.nextInt(panel.getHeight());
-        dx = random.nextInt(2*MAX_SPEED) - MAX_SPEED;
-        dy = random.nextInt(2*MAX_SPEED) - MAX_SPEED;
+        dx = random.nextInt(2*MAX_SPEED) - MAX_SPEED + 1;
+        dy = random.nextInt(2*MAX_SPEED) - MAX_SPEED + 1;
 
     }
 
@@ -76,7 +75,7 @@ public class Sprite implements Runnable{
     @Override
     public void run() {
         while (true) {
-
+            move();
             boolean inSphere = false;
 
             int nLastXPos;
@@ -84,20 +83,18 @@ public class Sprite implements Runnable{
             int ovalRadius = panel.ovalWidth / 2;
             int spriteRadius = SIZE / 2;
 
-                nLastXPos = x-7;
-                nLastYPos = y-7;
-                move();
-                panel.repaint();
-
-                double distance = ((panel.ovalCenter - nLastXPos) * (panel.ovalCenter - nLastXPos)) +
-                        ((panel.ovalCenter - nLastYPos) * (panel.ovalCenter - nLastYPos));
-                double doesEqual = (ovalRadius + spriteRadius) * (ovalRadius + spriteRadius);
+            nLastXPos = x - 7;
+            nLastYPos = y - 7;
 
 
-            if (distance <= doesEqual && inSphere == false ){
-                System.out.println("they are in the circle");
-                inSphere = true;
-                if ( panel.numOfSpritesinCircle <= 2 ) {
+            double distance = Math.pow((panel.ovalCenter - nLastXPos) - 5, 2) + Math.pow(panel.ovalCenter - nLastYPos - 5, 2);
+//                        //((panel.ovalCenter - nLastXPos) * (panel.ovalCenter - nLastXPos)) +
+//                        ((panel.ovalCenter - nLastYPos) * (panel.ovalCenter - nLastYPos));
+            double doesEqual = Math.pow((ovalRadius + spriteRadius), 2);// (ovalRadius + spriteRadius) * (ovalRadius + spriteRadius);
+
+
+            if (distance <= doesEqual) {
+                if (panel.numOfSpritesinCircle <= 3) {
                     try {
                         System.out.println(panel.numOfSpritesinCircle);
                         panel.consume();
@@ -105,7 +102,7 @@ public class Sprite implements Runnable{
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                }else if (panel.numOfSpritesinCircle > 4){
+                } else if (panel.numOfSpritesinCircle >= 4) {
                     try {
 
                         System.out.println("There are more  than 2 balls in the circle");
@@ -114,32 +111,12 @@ public class Sprite implements Runnable{
                         e.printStackTrace();
                     }
                 }
-              }
+            }
             try {
                 Thread.sleep(40);  // wake up roughly 25 frames per second
             } catch (InterruptedException exception) {
                 exception.printStackTrace();
             }
         }
-
     }
 }
-//                if (distance <= doesEqual && inSphere == false ){
-//                    System.out.println("they are in the circle");
-//                    inSphere = true;
-//                    if ( panel.numOfSpritesinCircle <= 2 ) {
-//                        try {
-//                            panel.consume();
-//
-//                        } catch (InterruptedException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }else{
-//                        try {
-//
-//                            System.out.println("There are more  than 2 balls in the circle");
-//                            panel.produce();
-//                        } catch (InterruptedException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
