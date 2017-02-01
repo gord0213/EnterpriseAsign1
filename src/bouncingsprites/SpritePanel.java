@@ -57,20 +57,19 @@ public class SpritePanel extends JPanel{
         }
     }
 	public synchronized void consume()throws InterruptedException {
+        ++numOfSpritesinCircle;
 		while (numOfSpritesinCircle <= 3){
-            ++numOfSpritesinCircle;
 			wait();
 		}
         notifyAll();
 	}
 	public synchronized void produce() throws InterruptedException {
-		//while (numOfSpritesinCircle > 4){
-            --numOfSpritesinCircle;
-
-			wait();
-		//}
-		notifyAll();
-	}
+        --numOfSpritesinCircle;
+        while (numOfSpritesinCircle > 4){
+            wait();
+        }
+        notifyAll();
+    }
 	private class Mouse extends MouseAdapter {
 		@Override
 	    public void mousePressed( final MouseEvent event ){

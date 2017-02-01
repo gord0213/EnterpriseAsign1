@@ -102,7 +102,7 @@ public class Sprite implements Runnable{
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                } else if (panel.numOfSpritesinCircle >= 4) {
+                } else if (panel.numOfSpritesinCircle > 4) {
                     try {
 
                         System.out.println("There are more  than 2 balls in the circle");
