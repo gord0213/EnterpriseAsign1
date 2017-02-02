@@ -72,28 +72,29 @@ public class Sprite implements Runnable{
         y += dy;
        // System.out.println("X = " + x + " Y = " + y);
     }
+    public boolean isInCircle(){
+        int nLastXPos;
+        int nLastYPos;
+        int ovalRadius = panel.ovalWidth / 2;
+        int spriteRadius = SIZE / 2;
+
+        nLastXPos = x - 7;
+        nLastYPos = y - 7;
+
+        double distance = Math.pow((panel.ovalCenter - nLastXPos) - 5, 2)
+                + Math.pow(panel.ovalCenter - nLastYPos - 5, 2);
+        double doesEqual = Math.pow((ovalRadius + spriteRadius), 2);
+        return distance <= doesEqual;
+    }
+
     @Override
     public void run() {
         while (true) {
+            
             move();
             boolean inSphere = false;
 
-            int nLastXPos;
-            int nLastYPos;
-            int ovalRadius = panel.ovalWidth / 2;
-            int spriteRadius = SIZE / 2;
-
-            nLastXPos = x - 7;
-            nLastYPos = y - 7;
-
-
-            double distance = Math.pow((panel.ovalCenter - nLastXPos) - 5, 2)
-                            + Math.pow(panel.ovalCenter - nLastYPos - 5, 2);
-
-            double doesEqual = Math.pow((ovalRadius + spriteRadius), 2);
-
-            if (distance <= doesEqual) {
-                if (panel.numOfSpritesinCircle <= 4) {
+            if (isInCircle()) {
                     try {
                         System.out.println(panel.numOfSpritesinCircle);
                         panel.consume();
@@ -101,7 +102,8 @@ public class Sprite implements Runnable{
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                } else if (panel.numOfSpritesinCircle > 4) {
+            }
+            if(isInCircle()){
                     try {
 
                        // System.out.println("There are more  than 2 balls in the circle");
@@ -109,8 +111,8 @@ public class Sprite implements Runnable{
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                }
             }
+
             try {
                 Thread.sleep(40);  // wake up roughly 25 frames per second
             } catch (InterruptedException exception) {

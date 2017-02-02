@@ -67,23 +67,23 @@ public class SpritePanel extends JPanel{
      * @throws InterruptedException
      */
 	public synchronized void consume()throws InterruptedException {
-		++numOfSpritesinCircle;
-		while (numOfSpritesinCircle <= 4 && numOfSpritesinCircle > 0){
+		while (numOfSpritesinCircle >= 4){
 			wait();
 		}
+		numOfSpritesinCircle++;
         notifyAll();
-	    --numOfSpritesinCircle;
 	}
 
     /**
-     *
+     * This method forces the thread to wait if there are more than 4 balls moving in the circle.
+     * Balls are entering
      * @throws InterruptedException
      */
 	public synchronized void produce() throws InterruptedException {
-        while (numOfSpritesinCircle ==3){
+        while (numOfSpritesinCircle < 2){
             wait();
-            --numOfSpritesinCircle;
         }
+        numOfSpritesinCircle--;
         notifyAll();
     }
 
