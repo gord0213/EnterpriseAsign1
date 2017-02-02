@@ -87,14 +87,13 @@ public class Sprite implements Runnable{
             nLastYPos = y - 7;
 
 
-            double distance = Math.pow((panel.ovalCenter - nLastXPos) - 5, 2) + Math.pow(panel.ovalCenter - nLastYPos - 5, 2);
-//                        //((panel.ovalCenter - nLastXPos) * (panel.ovalCenter - nLastXPos)) +
-//                        ((panel.ovalCenter - nLastYPos) * (panel.ovalCenter - nLastYPos));
-            double doesEqual = Math.pow((ovalRadius + spriteRadius), 2);// (ovalRadius + spriteRadius) * (ovalRadius + spriteRadius);
+            double distance = Math.pow((panel.ovalCenter - nLastXPos) - 5, 2)
+                            + Math.pow(panel.ovalCenter - nLastYPos - 5, 2);
 
+            double doesEqual = Math.pow((ovalRadius + spriteRadius), 2);
 
             if (distance <= doesEqual) {
-                if (panel.numOfSpritesinCircle <= 3) {
+                if (panel.numOfSpritesinCircle <= 4) {
                     try {
                         System.out.println(panel.numOfSpritesinCircle);
                         panel.consume();
@@ -105,7 +104,7 @@ public class Sprite implements Runnable{
                 } else if (panel.numOfSpritesinCircle > 4) {
                     try {
 
-                        System.out.println("There are more  than 2 balls in the circle");
+                       // System.out.println("There are more  than 2 balls in the circle");
                         panel.produce();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
