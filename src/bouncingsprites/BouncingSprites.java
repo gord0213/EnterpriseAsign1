@@ -1,7 +1,7 @@
-/* File Name:
+/* File Name: BouncingSprites.java
  * Author Name: Algonquin College
- * Modified By: 
- * Date:
+ * Modified By: Michael Gordanier
+ * Date: Feb 03, 2014
  * Description:
  */
 
@@ -15,6 +15,9 @@ public class BouncingSprites {
     private SpritePanel panel = new SpritePanel();
     private Sprite ball;
 
+    /**
+     * This method is used to create the frame and panel
+     */
     public BouncingSprites() {
         frame = new JFrame("Bouncing Sprites 2017W");
         frame.setSize(500, 500);
@@ -22,11 +25,19 @@ public class BouncingSprites {
         frame.add(panel);
         frame.setVisible(true);
     }
-    
+
+
+    /**
+     * This method starts the animation process of the panel
+     */
     public void start(){
     	panel.animate();  // never returns due to infinite loop in animate method
     }
 
+    /**This is the MAIN method that starts the rest of the code
+     *
+     * @param args
+     */
     public static void main(String[] args) {
         new BouncingSprites().start();
     }

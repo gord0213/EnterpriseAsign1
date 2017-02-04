@@ -1,7 +1,7 @@
-/* File Name:
+/* File Name: SpritePanel.java
  * Author Name: Algonquin College
- * Modified By: 
- * Date:
+ * Modified By: Michael Gordanier
+ * Date: Feb 03, 2014
  * Description:
  */
 
@@ -26,7 +26,7 @@ public class SpritePanel extends JPanel{
 	protected int ovalCenter = 235;
 	protected int ovalWidth = 150;
     private ExecutorService executorService;
-	protected int numOfSpritesinCircle = 1;
+	protected int numOfSpritesinCircle = 0;
     private int numOfBalls = 1;
 	public SpritePanel(){
 		addMouseListener(new Mouse());
@@ -35,7 +35,7 @@ public class SpritePanel extends JPanel{
     }
 
 
-    /**
+    /** Creates a new Sprite
      *
      * @param event
      */
@@ -47,7 +47,7 @@ public class SpritePanel extends JPanel{
 		++numOfBalls;
 	}
 
-    /**
+    /**Creates the movement of the sprite
      *
      */
 	public void animate(){
@@ -63,31 +63,31 @@ public class SpritePanel extends JPanel{
     }
 
     /**
-     *
+	 * This method forces the thread to wait if there are less than 2 balls in the circle
+	 * balls are leaving
      * @throws InterruptedException
      */
 	public synchronized void consume()throws InterruptedException {
-		while (numOfSpritesinCircle >= 4){
+		while (numOfSpritesinCircle  <= 2){
 			wait();
 		}
-		numOfSpritesinCircle++;
+		numOfSpritesinCircle--;
         notifyAll();
 	}
-
-    /**
-     * This method forces the thread to wait if there are more than 4 balls moving in the circle.
-     * Balls are entering
-     * @throws InterruptedException
-     */
+	/**
+	 * This method forces the thread to wait if there are more than 4 balls moving in the circle.
+	 * Balls are entering
+	 * @throws InterruptedException
+	 */
 	public synchronized void produce() throws InterruptedException {
-        while (numOfSpritesinCircle < 2){
+        while (numOfSpritesinCircle >= 4){
             wait();
         }
-        numOfSpritesinCircle--;
+		numOfSpritesinCircle++;
         notifyAll();
     }
 
-	/**
+	/**This method allows the user to createa new ball every time they click
 	 *
 	 */
 	private class Mouse extends MouseAdapter {
@@ -98,9 +98,8 @@ public class SpritePanel extends JPanel{
 	    }
 	}
 
-	/**
-	 *
-	 * @param g
+	/**This Method draws the moving sprite and the ocal that the sprites come in contact with
+	 * @param g Graphics class
 	 */
 	@Override
 	public void paintComponent(Graphics g){
